@@ -655,7 +655,53 @@ Blockly.defineBlocksWithJsonArray([
     colour: 0,
     tooltip: "enter raw code value to use",
   },
+  {
+    type: "plotting",
+    message0: "Plot %1 as %2 over %3 as %4",
+    args0: [
+      {
+        type: "input_value",
+        name: "xValue",
+      },
+      {
+        type: "field_input",
+        name: "xAxisName",
+      },
+      {
+        type: "input_value",
+        name: "yValue",
+      },
+      {
+        type: "field_input",
+        name: "yAxisName",
+      }
+    ],
+    inputsInline: true,
+    previousStatement: null,
+    nextStatement: null,
+    colour: "#777",
+    tooltip: "Use this block to create plots with the data from your EA"
+  }
 ]);
+
+Blockly.JavaScript['plotting'] = function(block) {
+  var variable_xvalue = Blockly.JavaScript.valueToCode(
+    block,
+    "xValue",
+    Blockly.JavaScript.ORDER_ATOMIC
+  );
+  var text_xaxisname = block.getFieldValue('xAxisName');
+  var variable_yvalue = Blockly.JavaScript.valueToCode(
+    block,
+    "yValue",
+    Blockly.JavaScript.ORDER_ATOMIC
+  );
+  var text_yaxisname = block.getFieldValue('yAxisName');
+
+  var code = "var print_var = \"plotting: " + text_xaxisname + "\" +"+ variable_xvalue + ";\n";
+  code += "consolelog(print_var);\n";
+  return code;
+};
 
 Blockly.JavaScript["experimental_raw_code"] = function (block) {
   return block.getFieldValue("code") + "\n";
@@ -1187,6 +1233,7 @@ Blockly.JavaScript["ea_debug_all"] = function () {
   code += 'windowalert("offspring_population: " + offspring_population);\n';
   return code;
 };
+
 Blockly.JavaScript["ea_debug"] = function (block) {
   var variable_ = Blockly.JavaScript.valueToCode(
     block,
