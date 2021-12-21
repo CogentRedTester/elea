@@ -207,6 +207,10 @@ function consoleLog(...v) {
   consolelog(v);
 }
 
+function plotlog(...v) {
+  Handler.sendMessage(new Message(Handler.PARENT_ID, v.join(" "), "print"));
+}
+
 // creates the message handler object for the calling script to use
 var Handler = new MessageHandler();
 

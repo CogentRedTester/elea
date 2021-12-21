@@ -698,8 +698,8 @@ Blockly.JavaScript['plotting'] = function(block) {
   );
   var text_yaxisname = block.getFieldValue('yAxisName');
 
-  var code = "var print_var = \"plotting: " + text_xaxisname + "\" +"+ variable_xvalue + ";\n";
-  code += "consolelog(print_var);\n";
+  var code = "var print_var = \"plotting: " + text_xaxisname + ": \" +"+ variable_xvalue + "+ \"\\n over " + text_yaxisname + ":\" + "+ variable_yvalue +";\n";
+  code += "plotlog(print_var);\n";
   return code;
 };
 
