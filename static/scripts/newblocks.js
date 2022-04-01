@@ -43,7 +43,7 @@ Blockly.JavaScript["ea_init"] = function (block) {
     block,
     "init_statements"
   );
-  
+
   let code = "";
   code = "function* mainFunction() {\n\n";
   code += "try {\n";
@@ -241,12 +241,16 @@ Blockly.JavaScript["run_loop"] = function (block) {
     "loop_statement"
   );
   // TODO: create or update global dev var counter and also reset in "prepare next run"
+  const loopVar = Blockly.JavaScript.nameDB_.getDistinctName(
+    "count",
+    Blockly.VARIABLE_CATEGORY_NAME
+  );
   var code =
-    "for (var i=0;(" +
+    "for (var " + loopVar + "=0;(" +
     continue_condition +
-    " || false) && i < " +
+    " || false) &&" + loopVar + " < " +
     exit_number +
-    ";i++){\n";
+    ";"+loopVar + "++){\n";
   code += statements_simulation_steps;
   code += "}\n";
   // TODO: increment global counter used for cost calculation
@@ -345,7 +349,11 @@ Blockly.JavaScript["ea_run_breeding"] = function (block) {
     Blockly.JavaScript.ORDER_NONE
   );
   var statements = Blockly.JavaScript.statementToCode(block, "loop_statement");
-  var code = "for (var j=0;j < " + loop_number + ";j++){\n";
+  var loopVar = Blockly.JavaScript.nameDB_.getDistinctName(
+    "count",
+    Blockly.VARIABLE_CATEGORY_NAME
+  );
+  var code = "for (var "+ loopVar + "=0;"+ loopVar + " < " + loop_number + ";"+loopVar + "++){\n";
   code += statements;
   code += "}\n";
   return code;
