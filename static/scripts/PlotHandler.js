@@ -18,11 +18,20 @@ class PlotHandler {
     }
 
     drawPlots() {
-        this.plotMap.forEach((value) => value.drawPlot());
+        this.plotMap.forEach((plot) => plot.drawPlot());
     }
 
     clearPlots() {
         this.plotMap = new Map();
+    }
+
+    getPlotData() {
+        console.log("fetching plotData");
+        let plotData = [];
+        this.plotMap.forEach((plot) => {
+            plotData.push(plot.getPlotData());
+        });
+        return plotData;
     }
 }
 
@@ -100,6 +109,18 @@ class PlotWorker {
         }
         return;
     }
+
+    getPlotData() {
+        //returns {title : plotTitle, data: csvString}
+        let csvString = "";
+        let csvLines = [];
+        this.plotData.forEach( (dataset) => {
+            let line = dataset.label + "," + dataset.data.join(",");
+            csvLines.push(line); 
+        });
+        csvString = csvLines.join("\n"); 
+        return { title: this.plotName, data: csvString };
+    }
 }
 
 var plotHandler = new PlotHandler();
@@ -116,6 +137,10 @@ function clearPlots() {
     plotHandler.clearPlots();
 }
 
+function getPlotData() {
+    return plotHandler.getPlotData();
+}
+
 //use a random color for every dataset for now 
 // after the PR for the new color scheme is completed, the plots colors will be based on that
 function random_rgba() {
@@ -123,4 +148,4 @@ function random_rgba() {
     return 'rgba(' + o(r() * s) + ',' + o(r() * s) + ',' + o(r() * s) + ',' + r().toFixed(1) + ')';
 }
 
-export { updateValue, drawPlots, clearPlots }; 
+export { updateValue, drawPlots, clearPlots, getPlotData }; 

@@ -4,6 +4,9 @@ import { workspace, getCode } from "./blocklyHandling";
 import { logDB } from "./logging";
 import { downloadFile, copyToClipboard } from "./fileUtils";
 import JSZip from "../jszip";
+import { getPlotData } from "../PlotHandler";
+import { zip } from "d3";
+import { csv } from "d3";
 
 function copyXMLToClipboard() {
   var xml = Blockly.Xml.domToPrettyText(Blockly.Xml.workspaceToDom(workspace));
@@ -44,6 +47,26 @@ async function downloadWorkspaceAsJS() {
   zip.file("logging.mjs", logging);
   let zip_file = await zip.generateAsync({ type: "blob" });
   downloadFile(zip_file, "elea.zip");
+}
+
+async function downloadPlots() {
+  let plotData = await getPlotData(); 
+  if(plotData.length < 2){
+    // not enough plots to justify the generation of a zip file 
+    if(plotData.length < 1){
+      return; 
+    }
+    let file = plotData[0].data; 
+    download(file,"eleaPlot.csv", "text"); 
+  }else{
+    let zip = new JSZip();
+    plotData.forEach(plotCsvData => {
+      zip.file(plotCsvData.title + ".csv",plotCsvData.data);
+    });
+    let zip_file = await zip.generateAsync({ type: "blob"}); 
+    downloadFile(zip_file, "eleaPlotsCSV.zip"); 
+  }
+  console.log("downloading plotdata ..." + plotData);
 }
 
 async function prepare_messagerhandler() {
@@ -146,13 +169,13 @@ function zipAlgorithm(zip, db, algorithm) {
       }
       zip.file(
         algorithm +
-          "/data_f" +
-          fn +
-          "/IOHprofiler_f" +
-          fn +
-          "_DIM" +
-          dim +
-          ".dat",
+        "/data_f" +
+        fn +
+        "/IOHprofiler_f" +
+        fn +
+        "_DIM" +
+        dim +
+        ".dat",
         contentsData
       );
       /////////////////////////////////////////
@@ -184,4 +207,5 @@ export {
   downloadWorkspaceAsJS,
   downloadFile,
   downloadLog,
+  downloadPlots,
 };

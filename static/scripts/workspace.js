@@ -5,6 +5,7 @@ import {
   copyXMLToClipboard,
   downloadWorkspace,
   downloadWorkspaceAsJS,
+  downloadPlots,
 } from "./modules/export";
 import { downloadLog } from "./modules/export";
 import { highlightAll } from "prismjs";
@@ -42,6 +43,8 @@ $("#copy_xml").click(copyXMLToClipboard);
 $("#download_js").click(downloadWorkspaceAsJS);
 $("#show_js").click(highlightAll);
 $("#download_json").click(downloadLog);
+$("#download_plots").click(downloadPlots); 
+
 
 $("#output-column").height($("#blockly-div").height());
 
