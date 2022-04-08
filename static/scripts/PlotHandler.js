@@ -26,7 +26,6 @@ class PlotHandler {
     }
 
     getPlotData() {
-        console.log("fetching plotData");
         let plotData = [];
         this.plotMap.forEach((plot) => {
             plotData.push(plot.getPlotData());
@@ -110,6 +109,8 @@ class PlotWorker {
         return;
     }
 
+    //Downloading the Plotdata as CSV: 
+    //Each line represents one Dataset where the first element is its name. 
     getPlotData() {
         //returns {title : plotTitle, data: csvString}
         let csvString = "";

@@ -51,6 +51,7 @@ async function downloadWorkspaceAsJS() {
 
 async function downloadPlots() {
   let plotData = await getPlotData(); 
+  // plotData is array with an object {plotName, plotDataAsCSVString} for every plot 
   if(plotData.length < 2){
     // not enough plots to justify the generation of a zip file 
     if(plotData.length < 1){
@@ -66,7 +67,6 @@ async function downloadPlots() {
     let zip_file = await zip.generateAsync({ type: "blob"}); 
     downloadFile(zip_file, "eleaPlotsCSV.zip"); 
   }
-  console.log("downloading plotdata ..." + plotData);
 }
 
 async function prepare_messagerhandler() {
